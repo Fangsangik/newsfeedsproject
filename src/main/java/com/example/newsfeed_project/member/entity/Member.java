@@ -38,5 +38,23 @@ public class Member {
         this.age = memberDtO.getAge();
         this.image = memberDtO.getImage();
     }
+
+    public void updatedMember(MemberDto memberDtO) {
+        if (memberDtO.getName() != null) {
+            this.name = memberDtO.getName();
+        }
+
+        if (memberDtO.getImage() != null) {
+            this.image = memberDtO.getImage();
+        }
+
+        if (memberDtO.getPhoneNumber() != null) {
+            this.phoneNumber = memberDtO.getPhoneNumber();
+        }
+
+        if (memberDtO.getAddress() != null) {
+            this.address = memberDtO.getAddress();
+        }
+    }
 }
 

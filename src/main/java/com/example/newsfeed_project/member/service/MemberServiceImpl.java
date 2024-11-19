@@ -24,22 +24,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberDto updateMember(MemberDto memberDto) {
-        Member findMemberId = validateId(memberDto.getId());
+    public MemberDto updateMember(Long id, MemberDto memberDto) {
+        Member findMemberId = validateId(id);
 
-        Member updatedMember = Member.builder()
-                    .id(findMemberId.getId())
-                    .name(memberDto.getName())
-                    .email(findMemberId.getEmail())
-                    .address(memberDto.getAddress())
-                    .password(findMemberId.getPassword())
-                    .image(memberDto.getImage())
-                    .phoneNumber(memberDto.getPhoneNumber())
-                    .deletedAt(findMemberId.getDeletedAt())
-                    .build();
+        findMemberId.updatedMember(memberDto);
+        Member updatedMember = memberRepository.save(findMemberId);
+        return new MemberDto(updatedMember);
 
-        updatedMember = memberRepository.save(updatedMember);
-            return new MemberDto(updatedMember);
     }
 
     @Override
