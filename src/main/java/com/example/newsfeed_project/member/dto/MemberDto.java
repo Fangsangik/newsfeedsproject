@@ -26,14 +26,35 @@ public class MemberDto {
     private LocalDateTime createdAt;
 
     // Entity에서 DTO로 변환하는 생성자
-    public MemberDto(Member member) {
-        this.id = member.getId();
-        this.name = member.getName();
-        this.email = member.getEmail();
-        this.password = member.getPassword();
-        this.phoneNumber = member.getPhoneNumber();
-        this.address = member.getAddress();
-        this.age = member.getAge();
-        this.image = member.getImage();
+    public static MemberDto toDto(Member member) {
+        return MemberDto.builder()
+                .id(member.getId())
+                .name(member.getName())
+                .email(member.getEmail())
+                .password(member.getPassword())
+                .phoneNumber(member.getPhoneNumber())
+                .address(member.getAddress())
+                .age(member.getAge())
+                .image(member.getImage())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .deletedAt(member.getDeletedAt() != null ? member.getDeletedAt() : null)
+                .build();
+    }
+
+    public MemberDto withPassword(String password) {
+        return MemberDto.builder()
+                .id(this.id)
+                .name(this.name)
+                .email(this.email)
+                .password(password)
+                .phoneNumber(this.phoneNumber)
+                .address(this.address)
+                .age(this.age)
+                .image(this.image)
+                .updatedAt(this.updatedAt)
+                .deletedAt(this.deletedAt)
+                .createdAt(this.createdAt)
+                .build();
     }
 }
