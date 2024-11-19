@@ -28,15 +28,18 @@ public class Member {
 
     private LocalDateTime deletedAt;
 
-    public Member(MemberDto memberDtO) {
-        this.id = memberDtO.getId();
-        this.name = memberDtO.getName();
-        this.email = memberDtO.getEmail();
-        this.password = memberDtO.getPassword();
-        this.phoneNumber = memberDtO.getPhoneNumber();
-        this.address = memberDtO.getAddress();
-        this.age = memberDtO.getAge();
-        this.image = memberDtO.getImage();
+    public static Member toEntity(MemberDto memberDtO) {
+        return Member.builder()
+                .id(memberDtO.getId())
+                .name(memberDtO.getName())
+                .email(memberDtO.getEmail())
+                .password(memberDtO.getPassword())
+                .phoneNumber(memberDtO.getPhoneNumber())
+                .address(memberDtO.getAddress())
+                .age(memberDtO.getAge())
+                .image(memberDtO.getImage())
+                .deletedAt(memberDtO.getDeletedAt())
+                .build();
     }
 
     public void updatedMember(MemberDto memberDtO) {
