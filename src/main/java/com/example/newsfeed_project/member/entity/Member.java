@@ -59,5 +59,19 @@ public class Member {
             this.address = memberDtO.getAddress();
         }
     }
+
+    public Member withPassword(String password) {
+        return new Member(
+                this.id,
+                this.name,
+                this.email,
+                password, // 변경된 비밀번호
+                this.phoneNumber,
+                this.address,
+                this.age,
+                this.image,
+                this.deletedAt
+        );
+    }
 }
 
