@@ -1,0 +1,105 @@
+Index: src/main/java/com/example/newsfeed_project/member/auth/WebConfig.java
+===================================================================
+diff --git a/src/main/java/com/example/newsfeed_project/member/auth/WebConfig.java b/src/main/java/com/example/newsfeed_project/member/auth/WebConfig.java
+deleted file mode 100644
+--- a/src/main/java/com/example/newsfeed_project/member/auth/WebConfig.java	(revision 48b8ea79a7b6bc1dbbc75dfd7246bbfce2c3b577)
++++ /dev/null	(revision 48b8ea79a7b6bc1dbbc75dfd7246bbfce2c3b577)
+@@ -1,19 +0,0 @@
+-package com.example.newsfeed_project.member.auth;
+-
+-import jakarta.servlet.Filter;
+-import jakarta.servlet.FilterRegistration;
+-import org.springframework.boot.web.servlet.FilterRegistrationBean;
+-import org.springframework.context.annotation.Bean;
+-import org.springframework.context.annotation.Configuration;
+-
+-@Configuration
+-public class WebConfig {
+-
+-    @Bean
+-    public FilterRegistrationBean<LoginFilter> filterRegistrationBean() {
+-        FilterRegistrationBean<Filter> registrationBean = new FilterRegistrationBean<>();
+-        registrationBean.setFilter(new LoginFilter());
+-        registrationBean.addUrlPatterns("/*");
+-        registrationBean.setOrder();
+-    }
+-}
+Index: src/main/java/com/example/newsfeed_project/member/dto/ResponseDto.java
+===================================================================
+diff --git a/src/main/java/com/example/newsfeed_project/member/dto/ResponseDto.java b/src/main/java/com/example/newsfeed_project/member/dto/ResponseDto.java
+deleted file mode 100644
+--- a/src/main/java/com/example/newsfeed_project/member/dto/ResponseDto.java	(revision 48b8ea79a7b6bc1dbbc75dfd7246bbfce2c3b577)
++++ /dev/null	(revision 48b8ea79a7b6bc1dbbc75dfd7246bbfce2c3b577)
+@@ -1,11 +0,0 @@
+-package com.example.newsfeed_project.member.dto;
+-
+-public class ResponseDto<T> {
+-    private String message;
+-    private T data;
+-
+-    public ResponseDto(String message, T data) {
+-        this.message = message;
+-        this.data = data;
+-    }
+-}
+Index: build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\n    id 'java'\n    id 'org.springframework.boot' version '3.3.5'\n    id 'io.spring.dependency-management' version '1.1.6'\n}\n\ngroup = 'com.example'\nversion = '0.0.1-SNAPSHOT'\n\njava {\n    toolchain {\n        languageVersion = JavaLanguageVersion.of(17)\n    }\n}\n\nconfigurations {\n    compileOnly {\n        extendsFrom annotationProcessor\n    }\n}\n\nrepositories {\n    mavenCentral()\n}\n\ndependencies {\n    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'\n    implementation 'org.springframework.boot:spring-boot-starter-validation'\n    implementation 'org.springframework.boot:spring-boot-starter-web'\n    compileOnly 'org.projectlombok:lombok'\n    runtimeOnly 'com.mysql:mysql-connector-j'\n    annotationProcessor 'org.projectlombok:lombok'\n    testImplementation 'org.springframework.boot:spring-boot-starter-test'\n    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'\n}\n\ntasks.named('test') {\n    useJUnitPlatform()\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/build.gradle b/build.gradle
+--- a/build.gradle	(revision 48b8ea79a7b6bc1dbbc75dfd7246bbfce2c3b577)
++++ b/build.gradle	(date 1732019618403)
+@@ -32,6 +32,7 @@
+     annotationProcessor 'org.projectlombok:lombok'
+     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
++    implementation 'at.favre.lib:bcrypt:0.10.2'
+ }
+ 
+ tasks.named('test') {
+Index: src/main/resources/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>spring.application.name=newsfeed_project\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/src/main/resources/application.properties b/src/main/resources/application.properties
+--- a/src/main/resources/application.properties	(revision 48b8ea79a7b6bc1dbbc75dfd7246bbfce2c3b577)
++++ b/src/main/resources/application.properties	(date 1732023580357)
+@@ -1,1 +1,12 @@
+ spring.application.name=newsfeed_project
++spring.datasource.url=jdbc:mysql://localhost:3306/newsFeed?useSSL=false&serverTimezone=UTC
++spring.datasource.username=root
++spring.datasource.password=1234
++
++spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
++
++spring.jpa.hibernate.ddl-auto=create
++
++logging.level.org.springframework.web=DEBUG
++logging.level.org.springframework.web.servlet=DEBUG
++logging.level.org.springframework.web.servlet.DispatcherServlet=DEBUG
+Index: src/main/java/com/example/newsfeed_project/member/controller/MemberController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.newsfeed_project.member.controller;\n\nimport com.example.newsfeed_project.member.dto.MemberDto;\nimport com.example.newsfeed_project.member.dto.MemberUpdateResponseDto;\nimport com.example.newsfeed_project.member.dto.PasswordRequestDto;\nimport com.example.newsfeed_project.member.dto.ResponseDto;\nimport com.example.newsfeed_project.member.service.MemberService;\nimport org.springframework.http.HttpStatus;\nimport org.springframework.http.ResponseEntity;\nimport org.springframework.web.bind.annotation.*;\n\n@RestController\n@RequestMapping(\"/members\")\npublic class MemberController {\n\n    private final MemberService memberService;\n\n    public MemberController(MemberService memberService) {\n        this.memberService = memberService;\n    }\n\n    @GetMapping(\"/{id}\")\n    public ResponseEntity<?> findById(@PathVariable Long id) {\n        MemberDto memberById = memberService.getMemberById(id);\n        return ResponseEntity.status(HttpStatus.OK).body(memberById);\n    }\n\n    @PostMapping(\"/register\")  // POST /members 경로\n    public ResponseEntity<?> createMember(@RequestBody MemberDto memberDto) {\n        MemberDto createdMember = memberService.createMember(memberDto);\n        return ResponseEntity.status(HttpStatus.CREATED).body(createdMember);\n    }\n\n    @PutMapping(\"/{id}\")\n    public ResponseEntity<?> updateMember(@PathVariable Long id, @RequestBody MemberDto memberDto) {\n        MemberDto updateMember = memberService.updateMember(id, memberDto.getPassword(), memberDto);\n        MemberUpdateResponseDto responseDto = MemberUpdateResponseDto.toResponseDto(updateMember);\n        return ResponseEntity.status(HttpStatus.OK).body(responseDto);\n    }\n\n    @GetMapping(\"/email\")\n    public ResponseEntity<?> findByEmail(@RequestParam String email) {\n        MemberDto memberByEmail = memberService.getMemberByEmail(email);\n        return ResponseEntity.status(HttpStatus.OK).body(memberByEmail);\n    }\n\n    @PostMapping(\"/password/{id}\")\n    public ResponseEntity<?> changePassword(@RequestBody PasswordRequestDto passwordRequestDto) {\n        MemberDto memberDto = memberService.changePassword(passwordRequestDto.getId(), passwordRequestDto.getOldPassword(), passwordRequestDto.getNewPassword());\n        return ResponseEntity.status(HttpStatus.OK).body(memberDto);\n    }\n\n    @DeleteMapping(\"/{id}\")\n    public ResponseEntity<?> deleteMemberById(@PathVariable Long id) {\n        memberService.deleteMemberById(id);\n        return ResponseEntity.status(HttpStatus.OK).body(null);\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/newsfeed_project/member/controller/MemberController.java b/src/main/java/com/example/newsfeed_project/member/controller/MemberController.java
+--- a/src/main/java/com/example/newsfeed_project/member/controller/MemberController.java	(revision 48b8ea79a7b6bc1dbbc75dfd7246bbfce2c3b577)
++++ b/src/main/java/com/example/newsfeed_project/member/controller/MemberController.java	(date 1732027893217)
+@@ -3,7 +3,6 @@
+ import com.example.newsfeed_project.member.dto.MemberDto;
+ import com.example.newsfeed_project.member.dto.MemberUpdateResponseDto;
+ import com.example.newsfeed_project.member.dto.PasswordRequestDto;
+-import com.example.newsfeed_project.member.dto.ResponseDto;
+ import com.example.newsfeed_project.member.service.MemberService;
+ import org.springframework.http.HttpStatus;
+ import org.springframework.http.ResponseEntity;
+diff --git a/member.sql b/member.sql
+new file mode 100644
