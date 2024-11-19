@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MemberUpdateResponseDto {
     private String image;
-    private String password;
     private String name;
     private String email;
     private String phoneNumber;
@@ -22,7 +21,6 @@ public class MemberUpdateResponseDto {
         return MemberUpdateResponseDto.builder()
                 .name(memberDto.getName())
                 .email(memberDto.getEmail())
-                .password(memberDto.getPassword())
                 .phoneNumber(memberDto.getPhoneNumber())
                 .address(memberDto.getAddress())
                 .image(memberDto.getImage())
