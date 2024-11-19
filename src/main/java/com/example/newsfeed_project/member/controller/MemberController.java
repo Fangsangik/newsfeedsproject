@@ -44,6 +44,12 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(memberByEmail);
     }
 
+    @PostMapping("/password/{id}")
+    public ResponseEntity<?> changePassword(@RequestBody PasswordRequestDto passwordRequestDto) {
+        MemberDto memberDto = memberService.changePassword(passwordRequestDto.getId(), passwordRequestDto.getOldPassword(), passwordRequestDto.getNewPassword());
+        return ResponseEntity.status(HttpStatus.OK).body(memberDto);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMemberById(@PathVariable Long id) {
         memberService.deleteMemberById(id);
