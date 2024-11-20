@@ -10,7 +10,7 @@ public interface MemberService {
     MemberDto getMemberById(Long id);
     MemberDto getMemberByEmail(String email);
     void deleteMemberById(Long id);
-    MemberDto changePassword(String email, String oldPassword, String newPassword, HttpSession session);
+    MemberDto changePassword(String oldPassword, String newPassword, HttpSession session);
     Member validateId(Long id);
     Member validateEmail(String email);
     boolean authenticate(String email, String password);
