@@ -1,7 +1,9 @@
 package com.example.newsfeed_project.comment.entity;
 
 import com.example.newsfeed_project.comment.dto.CommentDto;
+import com.example.newsfeed_project.comment.dto.UpdateCommentResponseDto;
 import com.example.newsfeed_project.common.BaseEntity;
+import com.example.newsfeed_project.member.dto.MemberDto;
 import com.example.newsfeed_project.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,6 +33,12 @@ public class Comment extends BaseEntity {
                 .id(dto.getId())
                 .contents(dto.getContents())
                 .build();
+    }
+
+    public void updateComment(CommentDto dto) {
+        if (dto.getContents() != null) {
+            this.contents = dto.getContents();
+        }
     }
 
 

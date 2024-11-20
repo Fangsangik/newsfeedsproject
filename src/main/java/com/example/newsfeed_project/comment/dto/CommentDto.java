@@ -15,14 +15,12 @@ public class CommentDto {
     private  Long id;
     private  String contents;
     private  LocalDateTime createdAt;
-    private  LocalDateTime updatedAt;
 
     public static CommentDto toDto(Comment comment) {
         return CommentDto.builder()
                 .id(comment.getId())
                 .contents(comment.getContents())
                 .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
     }
 

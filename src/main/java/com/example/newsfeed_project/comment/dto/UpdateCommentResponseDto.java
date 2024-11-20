@@ -18,4 +18,12 @@ public class UpdateCommentResponseDto {
                 .contents(comment.getContents())
                 .build();
     }
+
+    public static UpdateCommentResponseDto toResponseDto(CommentDto commentDto) {
+        return UpdateCommentResponseDto.builder()
+                .contents(commentDto.getContents())
+                .build();
+    }
+
+
 }
