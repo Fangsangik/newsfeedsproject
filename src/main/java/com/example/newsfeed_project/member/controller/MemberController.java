@@ -3,7 +3,6 @@ package com.example.newsfeed_project.member.controller;
 import com.example.newsfeed_project.member.dto.MemberDto;
 import com.example.newsfeed_project.member.dto.MemberUpdateResponseDto;
 import com.example.newsfeed_project.member.dto.PasswordRequestDto;
-import com.example.newsfeed_project.member.dto.ResponseDto;
 import com.example.newsfeed_project.member.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
