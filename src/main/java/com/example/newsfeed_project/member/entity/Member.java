@@ -28,9 +28,13 @@ public class Member {
 
     private LocalDateTime deletedAt;
 
+    @Version
+    //낙관적 락
+    //버전 관리를 통해 동시성 충돌 감지.
+    private Integer version;
+
     public static Member toEntity(MemberDto memberDtO) {
         return Member.builder()
-                .id(memberDtO.getId())
                 .name(memberDtO.getName())
                 .email(memberDtO.getEmail())
                 .password(memberDtO.getPassword())
@@ -61,17 +65,18 @@ public class Member {
     }
 
     public Member withPassword(String password) {
-        return new Member(
-                this.id,
-                this.name,
-                this.email,
-                password, // 변경된 비밀번호
-                this.phoneNumber,
-                this.address,
-                this.age,
-                this.image,
-                this.deletedAt
-        );
+        return Member.builder()
+                .id(this.id)
+                .name(this.name)
+                .email(this.email)
+                .password(password) // 변경된 비밀번호
+                .phoneNumber(this.phoneNumber)
+                .address(this.address)
+                .age(this.age)
+                .image(this.image)
+                .deletedAt(this.deletedAt)
+                .version(this.version)
+                .build();
     }
 }
 
