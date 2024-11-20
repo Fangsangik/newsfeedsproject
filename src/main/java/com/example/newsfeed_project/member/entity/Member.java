@@ -28,15 +28,50 @@ public class Member {
 
     private LocalDateTime deletedAt;
 
-    public Member(MemberDto memberDtO) {
-        this.id = memberDtO.getId();
-        this.name = memberDtO.getName();
-        this.email = memberDtO.getEmail();
-        this.password = memberDtO.getPassword();
-        this.phoneNumber = memberDtO.getPhoneNumber();
-        this.address = memberDtO.getAddress();
-        this.age = memberDtO.getAge();
-        this.image = memberDtO.getImage();
+    public static Member toEntity(MemberDto memberDtO) {
+        return Member.builder()
+                .id(memberDtO.getId())
+                .name(memberDtO.getName())
+                .email(memberDtO.getEmail())
+                .password(memberDtO.getPassword())
+                .phoneNumber(memberDtO.getPhoneNumber())
+                .address(memberDtO.getAddress())
+                .age(memberDtO.getAge())
+                .image(memberDtO.getImage())
+                .deletedAt(memberDtO.getDeletedAt())
+                .build();
+    }
+
+    public void updatedMember(MemberDto memberDtO) {
+        if (memberDtO.getName() != null) {
+            this.name = memberDtO.getName();
+        }
+
+        if (memberDtO.getImage() != null) {
+            this.image = memberDtO.getImage();
+        }
+
+        if (memberDtO.getPhoneNumber() != null) {
+            this.phoneNumber = memberDtO.getPhoneNumber();
+        }
+
+        if (memberDtO.getAddress() != null) {
+            this.address = memberDtO.getAddress();
+        }
+    }
+
+    public Member withPassword(String password) {
+        return new Member(
+                this.id,
+                this.name,
+                this.email,
+                password, // 변경된 비밀번호
+                this.phoneNumber,
+                this.address,
+                this.age,
+                this.image,
+                this.deletedAt
+        );
     }
 }
 
