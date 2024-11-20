@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Builder
 @NoArgsConstructor
@@ -12,18 +14,18 @@ import lombok.NoArgsConstructor;
 public class MemberUpdateResponseDto {
     private String image;
     private String name;
-    private String email;
     private String phoneNumber;
     private String address;
+    private LocalDateTime updatedAt;
 
 
     public static MemberUpdateResponseDto toResponseDto(MemberDto memberDto) {
         return MemberUpdateResponseDto.builder()
                 .name(memberDto.getName())
-                .email(memberDto.getEmail())
                 .phoneNumber(memberDto.getPhoneNumber())
                 .address(memberDto.getAddress())
                 .image(memberDto.getImage())
+                .updatedAt(memberDto.getUpdatedAt())
                 .build();
     }
 }
