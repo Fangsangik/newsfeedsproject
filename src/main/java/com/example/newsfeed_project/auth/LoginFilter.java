@@ -2,8 +2,6 @@ package com.example.newsfeed_project.auth;
 
 import com.example.newsfeed_project.member.entity.Member;
 import com.example.newsfeed_project.member.service.MemberService;
-import com.example.newsfeed_project.member.service.MemberServiceImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,9 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.PatternMatchUtils;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Map;
 
 @Slf4j
 public class LoginFilter implements Filter {
