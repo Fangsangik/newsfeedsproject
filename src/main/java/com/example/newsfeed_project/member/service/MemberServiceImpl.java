@@ -5,6 +5,7 @@ import com.example.newsfeed_project.member.dto.MemberDto;
 import com.example.newsfeed_project.member.entity.Member;
 import com.example.newsfeed_project.member.repository.MemberRepository;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class MemberServiceImpl implements MemberService {
 
@@ -78,9 +80,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public MemberDto changePassword(String email, String oldPassword, String newPassword, HttpSession session) {
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("Member not found"));
+    public MemberDto changePassword(String oldPassword, String newPassword, HttpSession session) {
+        Member member = validateEmail(session.getAttribute("email").toString());
 
         if (!passwordEncoder.matches(oldPassword, member.getPassword())) {
             throw new IllegalArgumentException("Old password and new password do not match");
@@ -90,7 +91,7 @@ public class MemberServiceImpl implements MemberService {
         Member changePassword = member.withPassword(encodedPassword);
         changePassword = memberRepository.save(changePassword);
 
-        //비밀번호 변경 후 세션 무효화
+        // 비밀번호 변경 후 세션 무효화
         session.invalidate();
 
         return MemberDto.toDto(changePassword);
