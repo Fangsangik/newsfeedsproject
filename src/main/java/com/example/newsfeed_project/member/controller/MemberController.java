@@ -56,7 +56,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(memberByEmail);
     }
 
-    @PostMapping("/password/{id}")
+    @PutMapping("/password/{id}")
     public ResponseEntity<?> changePassword(@RequestBody PasswordRequestDto passwordRequestDto, HttpSession session) {
         MemberDto memberDto = memberService.changePassword(passwordRequestDto.getOldPassword(), passwordRequestDto.getNewPassword(), session);
         return ResponseEntity.status(HttpStatus.OK).body(memberDto);
