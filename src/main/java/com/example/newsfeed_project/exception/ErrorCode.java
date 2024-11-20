@@ -5,6 +5,11 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorCode {
+  //회원을 찾지 못했습니다.
+  MEMBER_NOT_FOUND("회원을 찾지 못했습니다.", HttpStatus.NOT_FOUND),
+
+
+
   //비밀번호가 틀렸을 때 출력하는 오류 메시지
   WRONG_PASSWORD("비밀 번호가 틀렸습니다.", HttpStatus.BAD_REQUEST),
   //비밀번호 변경 시 이전 비밀번호와 같은 비밀번호를 사용했을 때 출력하는 오류 메시지
