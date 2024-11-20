@@ -2,6 +2,7 @@ package com.example.newsfeed_project.newsfeed.service;
 
 import com.example.newsfeed_project.newsfeed.dto.NewsfeedRequestDto;
 import com.example.newsfeed_project.newsfeed.dto.NewsfeedResponseDto;
+import com.example.newsfeed_project.newsfeed.entity.Newsfeed;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
@@ -16,4 +17,6 @@ public interface NewsfeedService {
   NewsfeedResponseDto updateNewsfeed(Long id, NewsfeedRequestDto dto, HttpSession session);
 
   void delete(Long id, HttpSession session);
+
+  Newsfeed findNewsfeedByIdOrElseThrow(Long id);
 }
